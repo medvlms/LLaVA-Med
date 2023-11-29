@@ -251,7 +251,7 @@ def http_bot(state, model_selector, temperature, max_new_tokens, request: gr.Req
     try:
         # Stream output
         response = requests.post(worker_addr + "/worker_generate_stream",
-            headers=headers, json=pload, stream=True, timeout=10)
+            headers=headers, json=pload, stream=True, timeout=5000)
         for chunk in response.iter_lines(decode_unicode=False, delimiter=b"\0"):
             if chunk:
                 data = json.loads(chunk.decode())
@@ -323,7 +323,7 @@ pre {
 
 def build_demo(embed_mode):
     textbox = gr.Textbox(show_label=False,
-        placeholder="Enter text and press ENTER", visible=False).style(container=False)
+        placeholder="Enter text and press ENTER", visible=True).style(container=False)
     with gr.Blocks(title="LLaVA-Med", theme=gr.themes.Base(), css=css) as demo:
         state = gr.State()
 
@@ -356,18 +356,18 @@ def build_demo(embed_mode):
                     [f"{cur_dir}/examples/waterview.jpg", "What are the things I should be cautious about when I visit here?"],
                 ], inputs=[imagebox, textbox])
 
-                with gr.Accordion("Parameters", open=False, visible=False) as parameter_row:
+                with gr.Accordion("Parameters", open=False, visible=True) as parameter_row:
                     temperature = gr.Slider(minimum=0.0, maximum=1.0, value=0.2, step=0.1, interactive=True, label="Temperature",)
                     max_output_tokens = gr.Slider(minimum=0, maximum=1024, value=512, step=64, interactive=True, label="Max output tokens",)
 
             with gr.Column(scale=6):
-                chatbot = grChatbot(elem_id="chatbot", label="LLaVA-Med Chatbot", visible=False).style(height=550)
+                chatbot = grChatbot(elem_id="chatbot", label="LLaVA-Med Chatbot", visible=True).style(height=550)
                 with gr.Row():
                     with gr.Column(scale=8):
                         textbox.render()
                     with gr.Column(scale=1, min_width=60):
-                        submit_btn = gr.Button(value="Submit", visible=False)
-                with gr.Row(visible=False) as button_row:
+                        submit_btn = gr.Button(value="Submit", visible=True)
+                with gr.Row(visible=True) as button_row:
                     upvote_btn = gr.Button(value="👍  Upvote", interactive=False)
                     downvote_btn = gr.Button(value="👎  Downvote", interactive=False)
                     flag_btn = gr.Button(value="⚠️  Flag", interactive=False)
@@ -378,7 +378,7 @@ def build_demo(embed_mode):
         if not embed_mode:
             gr.Markdown(tos_markdown)
             gr.Markdown(learn_more_markdown)
-        url_params = gr.JSON(visible=False)
+        url_params = gr.JSON(visible=True)
 
         # Register listeners
         btn_list = [upvote_btn, downvote_btn, flag_btn, regenerate_btn, clear_btn]
