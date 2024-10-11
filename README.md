@@ -290,7 +290,7 @@ python3 -m llava.model.apply_delta \
 
 #### Launch a controller
 ```Shell
-python -m llava.serve.controller --host 0.0.0.0 --port 10000
+python -m llava.serve.controller --host 0.0.0.0 --port 10001
 ```
 
 #### Launch a model worker
